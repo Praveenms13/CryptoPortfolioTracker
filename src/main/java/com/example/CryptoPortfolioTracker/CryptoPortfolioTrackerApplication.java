@@ -1,4 +1,4 @@
-package com.example.cryptoportfoliotracker;
+package com.example.CryptoPortfolioTracker;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
