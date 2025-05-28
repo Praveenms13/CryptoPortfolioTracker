@@ -26,7 +26,7 @@ public class UserController {
         return userService.getUserById(id);
     }
 
-    @PostMapping("/updateUsers/{id}")
+    @PostMapping("/updateUser/{id}")
     public ResponseEntity<ApiResponse> updateUser(@PathVariable Long id, @RequestBody User user) {
         System.out.println("Custom Log: Came into Update User by ID");
         return userService.updateUser(id, user);
