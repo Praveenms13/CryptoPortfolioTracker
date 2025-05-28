@@ -40,13 +40,13 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             } catch (Exception e) {
                 response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
                 response.setContentType("application/json");
-                response.getWriter().write("{\"error\": \"Invalid JWT token\"}");
+                response.getWriter().write("{\"error\": \"You are UnAuthorized\"}");
                 return;
             }
         } else if (authorizationHeader == null || !authorizationHeader.startsWith("Bearer ")) {
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             response.setContentType("application/json");
-            response.getWriter().write("{\"error\": \"Missing Authorization header\"}");
+            response.getWriter().write("{\"error\": \"You are UnAuthorized\"}");
             return;
         }
 
@@ -61,7 +61,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             } else {
                 response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
                 response.setContentType("application/json");
-                response.getWriter().write("{\"error\": \"Invalid JWT token\"}");
+                response.getWriter().write("{\"error\": \"You are UnAuthorized\"}");
                 return;
             }
         }
