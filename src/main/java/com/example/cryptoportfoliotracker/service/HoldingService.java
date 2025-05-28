@@ -1,5 +1,6 @@
 package com.example.CryptoPortfolioTracker.service;
 
+import com.example.CryptoPortfolioTracker.dto.AddHoldingRequest;
 import com.example.CryptoPortfolioTracker.entity.Holding;
 import com.example.CryptoPortfolioTracker.entity.User;
 import com.example.CryptoPortfolioTracker.model.ApiResponse;
@@ -39,4 +40,27 @@ public class HoldingService {
                     .body(new ApiResponse(false, "Error fetching holdings"));
         }
     }
+
+    public ResponseEntity<ApiResponse> addHolding(User user, AddHoldingRequest request) {
+        try {
+            Holding holding = new Holding();
+            holding.setUser(user);
+            holding.setCoinId(request.getCoinId());
+            holding.setCoinName(request.getCoinName());
+            holding.setCoinSymbol(request.getCoinSymbol());
+            holding.setCoinQuantity(request.getQuantity());
+            holding.setBoughtPrice(request.getBoughtPrice().longValue());
+            holding.setBoughtDate(LocalDateTime.now());
+            holding.setPricealert(null);
+
+            holdingRepository.save(holding);
+
+            return ResponseEntity.ok(new ApiResponse(true, "Holding added successfully", holding));
+        } catch (Exception e) {
+            System.err.println("Error adding holding: " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(new ApiResponse(false, "Error adding holding"));
+        }
+    }
+
 }

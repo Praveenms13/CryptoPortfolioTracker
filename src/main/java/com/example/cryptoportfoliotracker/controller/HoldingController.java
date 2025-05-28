@@ -1,6 +1,7 @@
 package com.example.CryptoPortfolioTracker.controller;
 
 import com.example.CryptoPortfolioTracker.config.JwtUtil;
+import com.example.CryptoPortfolioTracker.dto.AddHoldingRequest;
 import com.example.CryptoPortfolioTracker.entity.User;
 import com.example.CryptoPortfolioTracker.model.ApiResponse;
 import com.example.CryptoPortfolioTracker.repository.UserRepository;
@@ -50,4 +51,30 @@ public class HoldingController {
         User user = userOptional.get();
         return holdingService.getHoldingsByUserId(Math.toIntExact(user.getId()));
     }
+
+    @PostMapping("/add")
+    public ResponseEntity<ApiResponse> addHolding(@RequestBody AddHoldingRequest request, HttpServletRequest httpRequest) {
+        String authHeader = httpRequest.getHeader("Authorization");
+
+        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new ApiResponse(false, "Unauthorized"));
+        }
+
+        String token = authHeader.substring(7);
+        String username;
+
+        try {
+            username = jwtUtil.extractUsername(token);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new ApiResponse(false, "Invalid token"));
+        }
+
+        Optional<User> userOptional = userRepository.findByUsernameOrEmail(username, username);
+        if (userOptional.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ApiResponse(false, "User not found"));
+        }
+
+        return holdingService.addHolding(userOptional.get(), request);
+    }
+
 }
