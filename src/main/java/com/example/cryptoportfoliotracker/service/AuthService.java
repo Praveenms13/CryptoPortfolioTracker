@@ -4,6 +4,7 @@ import com.example.CryptoPortfolioTracker.config.JwtUtil;
 import com.example.CryptoPortfolioTracker.dto.LoginRequest;
 import com.example.CryptoPortfolioTracker.dto.RegisterRequest;
 import com.example.CryptoPortfolioTracker.entity.User;
+import com.example.CryptoPortfolioTracker.enums.Role;
 import com.example.CryptoPortfolioTracker.model.ApiResponse;
 import com.example.CryptoPortfolioTracker.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,17 +53,25 @@ public class AuthService {
 
     public ResponseEntity<ApiResponse> login(LoginRequest req) {
         System.out.println("Custom Log: Came into Login Service");
-        Optional<User> optionalUser = userRepo.findByUsernameOrEmail(req.getUsernameOrEmail(),
-                req.getUsernameOrEmail());
+
+        Optional<User> optionalUser = userRepo.findByUsernameOrEmail(req.getUsernameOrEmail(), req.getUsernameOrEmail());
 
         if (optionalUser.isPresent()) {
             User user = optionalUser.get();
+
             if (encoder.matches(req.getPassword(), user.getPassword())) {
+                if (!user.getRole().equals(Role.USER)) {
+                    return ResponseEntity.status(HttpStatus.FORBIDDEN)
+                            .body(new ApiResponse(false, "Access denied: Only USER role is allowed"));
+                }
+
                 String token = jwtUtil.generateToken(user.getUsername());
                 return ResponseEntity.ok(new ApiResponse(true, "Login successful", token));
             }
         }
+
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
                 .body(new ApiResponse(false, "Invalid credentials"));
     }
+
 }

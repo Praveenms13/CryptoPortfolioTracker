@@ -1,7 +1,9 @@
 package com.example.CryptoPortfolioTracker.entity;
 
+import com.example.CryptoPortfolioTracker.enums.Role;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -19,6 +21,9 @@ public class User {
     private Boolean isVerified = false;
     private LocalDateTime registeredAt = LocalDateTime.now();
 
+    @Enumerated(EnumType.STRING)
+    private Role role = Role.USER;  // Default role
+
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Log> logs;
 
@@ -28,6 +33,8 @@ public class User {
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<PriceAlert> priceAlerts;
+
+    // Getters and Setters
 
     public Long getId() { return (long) id; }
     public void setId(Long id) { this.id = Math.toIntExact(id); }
@@ -58,4 +65,11 @@ public class User {
 
     public List<PriceAlert> getPriceAlerts() { return priceAlerts; }
     public void setPriceAlerts(List<PriceAlert> priceAlerts) { this.priceAlerts = priceAlerts; }
+
+    public Role getRole() {
+        return role;
+    }
+    public void setRole(Role role) {
+        this.role = role;
+    }
 }

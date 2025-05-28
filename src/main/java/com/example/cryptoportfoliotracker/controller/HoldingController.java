@@ -77,4 +77,31 @@ public class HoldingController {
         return holdingService.addHolding(userOptional.get(), request);
     }
 
+    @GetMapping("/getMyNetValue")
+    public ResponseEntity<ApiResponse> getMyNetValue(HttpServletRequest request) {
+        String authHeader = request.getHeader("Authorization");
+        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .body(new ApiResponse(false, "Unauthorized"));
+        }
+
+        String token = authHeader.substring(7);
+        String username;
+
+        try {
+            username = jwtUtil.extractUsername(token);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .body(new ApiResponse(false, "Invalid token"));
+        }
+
+        Optional<User> userOptional = userRepository.findByUsernameOrEmail(username, username);
+        if (userOptional.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(new ApiResponse(false, "User not found"));
+        }
+
+        // return holdingService.getMyNetValue(userOptional.get().getId());
+        return holdingService.getMyNetValue(userOptional.get().getId(), token);
+    }
 }
