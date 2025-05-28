@@ -27,6 +27,7 @@ public class AuthService {
     private JwtUtil jwtUtil;
 
     public ResponseEntity<ApiResponse> register(RegisterRequest req) {
+        System.out.println("Custom Log: Came into Register Service");
         if (userRepo.findByUsername(req.getUsername()).isPresent()) {
             return ResponseEntity.status(HttpStatus.CONFLICT)
                     .body(new ApiResponse(false, "Username already exists"));
@@ -49,9 +50,10 @@ public class AuthService {
                 .body(new ApiResponse(true, "User registered successfully"));
     }
 
-
     public ResponseEntity<ApiResponse> login(LoginRequest req) {
-        Optional<User> optionalUser = userRepo.findByUsernameOrEmail(req.getUsernameOrEmail(), req.getUsernameOrEmail());
+        System.out.println("Custom Log: Came into Login Service");
+        Optional<User> optionalUser = userRepo.findByUsernameOrEmail(req.getUsernameOrEmail(),
+                req.getUsernameOrEmail());
 
         if (optionalUser.isPresent()) {
             User user = optionalUser.get();

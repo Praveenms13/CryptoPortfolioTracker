@@ -17,11 +17,13 @@ public class AuthController {
 
     @PostMapping("/register")
     public ResponseEntity<ApiResponse> register(@RequestBody RegisterRequest req) {
+        System.out.println("Custom Log: Came into Register Request");
         return authService.register(req);
     }
 
     @PostMapping("/login")
     public ResponseEntity<ApiResponse> login(@RequestBody LoginRequest req) {
+        System.out.println("Custom Log: Came into Login Request");
         return authService.login(req);
     }
 }

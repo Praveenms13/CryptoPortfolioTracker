@@ -16,16 +16,19 @@ public class UserController {
 
     @GetMapping("/getAllUsers")
     public ResponseEntity<ApiResponse> getAllUsers() {
+        System.out.println("Custom Log: Came into Get All Users");
         return userService.getAllUsers();
     }
 
     @GetMapping("/getUser/{id}")
     public ResponseEntity<ApiResponse> getUserById(@PathVariable Long id) {
+        System.out.println("Custom Log: Came into Get User by ID");
         return userService.getUserById(id);
     }
 
     @PostMapping("/updateUsers/{id}")
     public ResponseEntity<ApiResponse> updateUser(@PathVariable Long id, @RequestBody User user) {
+        System.out.println("Custom Log: Came into Update User by ID");
         return userService.updateUser(id, user);
     }
 }

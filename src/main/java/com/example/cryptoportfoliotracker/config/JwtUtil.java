@@ -14,19 +14,22 @@ import java.util.function.Function;
 public class JwtUtil {
 
     private final String SECRET = "myVerySecureAndConsistentSecretKeyForJWTTokenValidation2024";
-    private final long EXPIRATION_TIME = 86400000; // 24 hours
+    private final long EXPIRATION_TIME = 86400000;
 
     private SecretKey getSigningKey() {
         return Keys.hmacShaKeyFor(SECRET.getBytes());
     }
 
     public String generateToken(String username) {
-        return Jwts.builder()
+        System.out.println("Custom Log: Generating token for user: " + username);
+        String token = Jwts.builder()
                 .setSubject(username)
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
                 .signWith(getSigningKey())
                 .compact();
+        System.out.println("Custom Log: Generated JWT token for user: " + token);
+        return token;
     }
 
     public String extractUsername(String token) {
@@ -56,6 +59,9 @@ public class JwtUtil {
 
     public Boolean validateToken(String token, String username) {
         final String extractedUsername = extractUsername(token);
+        System.out.println("Custom Log: Extracted username: " + extractedUsername);
+        System.out.println(
+                "Custom Log: Is token valid: " + (extractedUsername.equals(username) && !isTokenExpired(token)));
         return (extractedUsername.equals(username) && !isTokenExpired(token));
     }
 }

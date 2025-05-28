@@ -17,11 +17,13 @@ public class UserService {
     private UserRepository userRepo;
 
     public ResponseEntity<ApiResponse> getAllUsers() {
+        System.out.println("Custom Log: Came into Get All Users Service to get all users");
         List<User> users = userRepo.findAll();
         return ResponseEntity.ok(new ApiResponse(true, "Users fetched", users));
     }
 
     public ResponseEntity<ApiResponse> getUserById(Long id) {
+        System.out.println("Custom Log: Came into Get User Service to get User by ID");
         return userRepo.findById(id)
                 .map(user -> ResponseEntity.ok(new ApiResponse(true, "User found", user)))
                 .orElse(ResponseEntity.status(HttpStatus.NOT_FOUND)
@@ -29,6 +31,7 @@ public class UserService {
     }
 
     public ResponseEntity<ApiResponse> updateUser(Long id, User updatedUser) {
+        System.out.println("Custom Log: Came into Update User Service");
         return userRepo.findById(id).map(user -> {
             user.setUsername(updatedUser.getUsername());
             user.setName(updatedUser.getName());
