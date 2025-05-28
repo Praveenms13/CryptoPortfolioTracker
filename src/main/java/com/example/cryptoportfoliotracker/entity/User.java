@@ -2,6 +2,7 @@ package com.example.CryptoPortfolioTracker.entity;
 
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Table(name = "users")
@@ -16,6 +17,15 @@ public class User {
     private String password;
     private Boolean isVerified = false;
     private LocalDateTime registeredAt = LocalDateTime.now();
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Log> logs;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Holding> holdings;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<PriceAlert> priceAlerts;
 
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
@@ -37,4 +47,13 @@ public class User {
 
     public LocalDateTime getRegisteredAt() { return registeredAt; }
     public void setRegisteredAt(LocalDateTime registeredAt) { this.registeredAt = registeredAt; }
+
+    public List<Log> getLogs() { return logs; }
+    public void setLogs(List<Log> logs) { this.logs = logs; }
+
+    public List<Holding> getHoldings() { return holdings; }
+    public void setHoldings(List<Holding> holdings) { this.holdings = holdings; }
+
+    public List<PriceAlert> getPriceAlerts() { return priceAlerts; }
+    public void setPriceAlerts(List<PriceAlert> priceAlerts) { this.priceAlerts = priceAlerts; }
 }
