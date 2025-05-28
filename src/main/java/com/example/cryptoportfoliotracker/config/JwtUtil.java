@@ -2,8 +2,8 @@ package com.example.CryptoPortfolioTracker.config;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import javax.crypto.SecretKey;
@@ -13,11 +13,14 @@ import java.util.function.Function;
 @Component
 public class JwtUtil {
 
-    private final String SECRET = "myVerySecureAndConsistentSecretKeyForJWTTokenValidation2024";
-    private final long EXPIRATION_TIME = 86400000;
+    @Value("${jwt.secret}")
+    private String secret;
+
+    @Value("${jwt.expiration}")
+    private long expirationTime;
 
     private SecretKey getSigningKey() {
-        return Keys.hmacShaKeyFor(SECRET.getBytes());
+        return Keys.hmacShaKeyFor(secret.getBytes());
     }
 
     public String generateToken(String username) {
@@ -25,10 +28,10 @@ public class JwtUtil {
         String token = Jwts.builder()
                 .setSubject(username)
                 .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
+                .setExpiration(new Date(System.currentTimeMillis() + expirationTime))
                 .signWith(getSigningKey())
                 .compact();
-        System.out.println("Custom Log: Generated JWT token for user: " + token);
+        System.out.println("Custom Log: Generated JWT token: " + token);
         return token;
     }
 
@@ -60,8 +63,8 @@ public class JwtUtil {
     public Boolean validateToken(String token, String username) {
         final String extractedUsername = extractUsername(token);
         System.out.println("Custom Log: Extracted username: " + extractedUsername);
-        System.out.println(
-                "Custom Log: Is token valid: " + (extractedUsername.equals(username) && !isTokenExpired(token)));
+        System.out.println("Custom Log: Is token valid: " +
+                (extractedUsername.equals(username) && !isTokenExpired(token)));
         return (extractedUsername.equals(username) && !isTokenExpired(token));
     }
 }
