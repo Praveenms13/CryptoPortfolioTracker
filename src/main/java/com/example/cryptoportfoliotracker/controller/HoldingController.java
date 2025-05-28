@@ -48,6 +48,6 @@ public class HoldingController {
                     .body(new ApiResponse(false, "User not found"));
         }
         User user = userOptional.get();
-        return holdingService.getHoldingsByUserId(user.getId());
+        return holdingService.getHoldingsByUserId(Math.toIntExact(user.getId()));
     }
 }

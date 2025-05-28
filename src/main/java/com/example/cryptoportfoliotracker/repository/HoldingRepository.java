@@ -9,9 +9,9 @@ import java.util.List;
 @Repository
 public interface HoldingRepository extends JpaRepository<Holding, Long> {
 
-    List<Holding> findByUserId(Long userId);
+    List<Holding> findByUserId(int userId);
 
-    List<Holding> findByUserIdOrderByBoughtDateDesc(Long userId);
+    List<Holding> findByUserIdOrderByBoughtDateDesc(int userId);
 
-    List<Holding> findByUserIdAndCoinSymbol(Long userId, String coinSymbol);
+    List<Holding> findByUserIdAndCoinSymbol(int userId, String coinSymbol);
 }

@@ -23,7 +23,7 @@ public class HoldingService {
     @Autowired
     private UserRepository userRepository;
 
-    public ResponseEntity<ApiResponse> getHoldingsByUserId(Long userId) {
+    public ResponseEntity<ApiResponse> getHoldingsByUserId(int userId) {
         try {
             List<Holding> holdings = holdingRepository.findByUserIdOrderByBoughtDateDesc(userId);
 
