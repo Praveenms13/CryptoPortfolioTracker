@@ -1,4 +1,4 @@
-package com.example.cryptoportfoliotracker.dto;
+package com.example.CryptoPortfolioTracker.dto;
 
 import java.util.List;
 

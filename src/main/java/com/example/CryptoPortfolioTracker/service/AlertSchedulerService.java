@@ -1,9 +1,9 @@
-package com.example.cryptoportfoliotracker.service;
+package com.example.CryptoPortfolioTracker.service;
 
-import com.example.cryptoportfoliotracker.entity.Alert;
-import com.example.cryptoportfoliotracker.entity.AlertDirection;
-import com.example.cryptoportfoliotracker.entity.AlertStatus;
-import com.example.cryptoportfoliotracker.repository.AlertRepository;
+import com.example.CryptoPortfolioTracker.entity.Alert;
+import com.example.CryptoPortfolioTracker.entity.AlertDirection;
+import com.example.CryptoPortfolioTracker.entity.AlertStatus;
+import com.example.CryptoPortfolioTracker.repository.AlertRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
@@ -22,9 +22,7 @@ public class AlertSchedulerService {
     @Autowired
     private NotificationService notificationService;
 
-
-
-    @Scheduled(fixedRate = 30000) // Check every 30 seconds
+    @Scheduled(fixedRate = 30000) // Runs every 30 seconds
     public void checkAlerts() {
         List<Alert> pendingAlerts = alertRepository.findByStatus(AlertStatus.PENDING);
 
@@ -38,31 +36,30 @@ public class AlertSchedulerService {
                     continue;
                 }
 
-                boolean shouldTrigger = checkTriggerCondition(alert, currentPrice);
+                boolean shouldTrigger = false;
+
+                if (alert.getDirection() == AlertDirection.ABOVE && currentPrice > alert.getTriggerPrice()) {
+                    shouldTrigger = true;
+                } else if (alert.getDirection() == AlertDirection.BELOW && currentPrice < alert.getTriggerPrice()) {
+                    shouldTrigger = true;
+                }
 
                 if (shouldTrigger) {
-                    try{
+                    try {
                         notificationService.sendNotification(alert, currentPrice);
-                    }
-                    catch (Exception e){
-                        e.printStackTrace();//exception from notification service
-                    }
-                    finally{
+                    } catch (Exception e) {
+                        e.printStackTrace(); // log error from notification service
+                    } finally {
                         System.out.println("Alert triggered for " + alert.getSymbol() + " at $" + currentPrice);
                         alert.setStatus(AlertStatus.TRIGGERED);
                         alert.setTriggeredAt(LocalDateTime.now());
                         alertRepository.save(alert);
-
                     }
                 }
+
             } catch (Exception e) {
                 System.err.println("Error processing alert ID " + alert.getId() + ": " + e.getMessage());
             }
         }
     }
-
-    private boolean checkTriggerCondition(Alert alert, Double currentPrice) {
-        return (alert.getDirection() == AlertDirection.ABOVE && currentPrice <= alert.getTriggerPrice()) ||
-                (alert.getDirection() == AlertDirection.BELOW && currentPrice >= alert.getTriggerPrice());
-}
 }

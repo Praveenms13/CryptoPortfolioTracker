@@ -1,9 +1,9 @@
-package com.example.cryptoportfoliotracker.service;
+package com.example.CryptoPortfolioTracker.service;
 
-import com.example.cryptoportfoliotracker.dto.AlertRequestDTO;
-import com.example.cryptoportfoliotracker.entity.Alert;
-import com.example.cryptoportfoliotracker.entity.AlertStatus;
-import com.example.cryptoportfoliotracker.repository.AlertRepository;
+import com.example.CryptoPortfolioTracker.dto.AlertRequestDTO;
+import com.example.CryptoPortfolioTracker.entity.Alert;
+import com.example.CryptoPortfolioTracker.entity.AlertStatus;
+import com.example.CryptoPortfolioTracker.repository.AlertRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

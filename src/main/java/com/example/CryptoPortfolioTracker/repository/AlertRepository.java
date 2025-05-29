@@ -1,7 +1,7 @@
-package com.example.cryptoportfoliotracker.repository;
+package com.example.CryptoPortfolioTracker.repository;
 
-import com.example.cryptoportfoliotracker.entity.Alert;
-import com.example.cryptoportfoliotracker.entity.AlertStatus;
+import com.example.CryptoPortfolioTracker.entity.Alert;
+import com.example.CryptoPortfolioTracker.entity.AlertStatus;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

@@ -1,6 +1,6 @@
-package com.example.cryptoportfoliotracker.dto;
+package com.example.CryptoPortfolioTracker.dto;
 
-import com.example.cryptoportfoliotracker.entity.AlertDirection;
+import com.example.CryptoPortfolioTracker.entity.AlertDirection;
 
 public class AlertRequestDTO {
     private Long userId;

@@ -1,4 +1,4 @@
-package com.example.cryptoportfoliotracker.entity;
+package com.example.CryptoPortfolioTracker.entity;
 
 import jakarta.persistence.*;
 import java.time.LocalDateTime;

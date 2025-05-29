@@ -1,4 +1,4 @@
-package com.example.cryptoportfoliotracker.service;
+package com.example.CryptoPortfolioTracker.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;

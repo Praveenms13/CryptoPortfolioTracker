@@ -1,6 +1,6 @@
-package com.example.cryptoportfoliotracker.controller;
+package com.example.CryptoPortfolioTracker.controller;
 
-import com.example.cryptoportfoliotracker.service.PriceService;
+import com.example.CryptoPortfolioTracker.service.PriceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
