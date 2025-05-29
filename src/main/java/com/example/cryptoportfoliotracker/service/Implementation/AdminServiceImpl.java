@@ -4,40 +4,24 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-<<<<<<< HEAD
-import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Service;
-
-=======
-import com.example.CryptoPortfolioTracker.dto.LoginRequest;
->>>>>>> origin/bhanu
-import com.example.CryptoPortfolioTracker.dto.ClientResponse;
-import com.example.CryptoPortfolioTracker.enums.Role;
-import com.example.CryptoPortfolioTracker.entity.User;
-import com.example.CryptoPortfolioTracker.model.ApiResponse;
-import com.example.CryptoPortfolioTracker.repository.UserRepository;
-<<<<<<< HEAD
-import com.example.CryptoPortfolioTracker.service.AdminService;
-
-=======
-import com.example.CryptoPortfolioTracker.config.JwtUtil;
-import com.example.CryptoPortfolioTracker.service.AdminService;
-
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
->>>>>>> origin/bhanu
+import com.example.CryptoPortfolioTracker.config.JwtUtil;
+import com.example.CryptoPortfolioTracker.dto.ClientResponse;
+import com.example.CryptoPortfolioTracker.dto.LoginRequest;
+import com.example.CryptoPortfolioTracker.entity.User;
+import com.example.CryptoPortfolioTracker.enums.Role;
+import com.example.CryptoPortfolioTracker.model.ApiResponse;
+import com.example.CryptoPortfolioTracker.repository.UserRepository;
+import com.example.CryptoPortfolioTracker.service.AdminService;
+
 @Service
 public class AdminServiceImpl implements AdminService {
 
     private final UserRepository userRepo;
-<<<<<<< HEAD
-
-    public AdminServiceImpl(UserRepository userRepo) {
-        this.userRepo = userRepo;
-=======
     private final PasswordEncoder encoder;
     private final JwtUtil jwtUtil;
 
@@ -45,7 +29,6 @@ public class AdminServiceImpl implements AdminService {
         this.userRepo = userRepo;
         this.encoder = encoder;
         this.jwtUtil = jwtUtil;
->>>>>>> origin/bhanu
     }
 
     @Override
@@ -85,8 +68,6 @@ public class AdminServiceImpl implements AdminService {
 
         return ResponseEntity.ok(new ApiResponse(true, "User fetched", dto));
     }
-<<<<<<< HEAD
-=======
 
     public ResponseEntity<ApiResponse> login(LoginRequest req) {
         System.out.println("Custom Log: Came into Login Service");
@@ -110,5 +91,4 @@ public class AdminServiceImpl implements AdminService {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
                 .body(new ApiResponse(false, "Invalid credentials"));
     }
->>>>>>> origin/bhanu
 }
