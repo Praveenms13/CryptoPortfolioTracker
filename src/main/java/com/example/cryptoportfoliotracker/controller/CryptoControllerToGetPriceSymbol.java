@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/crypto")
-public class CryptoController {
+public class CryptoControllerToGetPriceSymbol {
 
     @Autowired
     private PriceService priceService;
