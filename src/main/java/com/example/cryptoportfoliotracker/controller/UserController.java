@@ -54,11 +54,11 @@ public class UserController {
                         .body(new ApiResponse(false, "User not found")));
     }
 
-    @GetMapping("/getAllUsers")
+    /* @GetMapping("/getAllUsers")
     public ResponseEntity<ApiResponse> getAllUsers() {
         System.out.println("Custom Log: Came into Get All Users");
         return userService.getAllUsers();
-    }
+    } */
 
     /* @GetMapping("/getUser/{id}")
     public ResponseEntity<ApiResponse> getUserById(@PathVariable Long id) {

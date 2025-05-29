@@ -74,7 +74,7 @@ public class HoldingController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ApiResponse(false, "User not found"));
         }
 
-        return holdingService.addHolding(userOptional.get(), request);
+        return holdingService.addHolding(userOptional.get(), request, token);
     }
 
     @GetMapping("/getMyNetValue")

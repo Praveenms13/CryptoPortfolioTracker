@@ -16,11 +16,11 @@ public class UserService {
     @Autowired
     private UserRepository userRepo;
 
-    public ResponseEntity<ApiResponse> getAllUsers() {
+    /* public ResponseEntity<ApiResponse> getAllUsers() {
         System.out.println("Custom Log: Came into Get All Users Service to get all users");
         List<User> users = userRepo.findAll();
         return ResponseEntity.ok(new ApiResponse(true, "Users fetched", users));
-    }
+    } */
 
     public ResponseEntity<ApiResponse> getUserById(Long id) {
         System.out.println("Custom Log: Came into Get User Service to get User by ID");

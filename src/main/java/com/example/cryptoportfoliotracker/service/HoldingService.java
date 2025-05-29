@@ -40,15 +40,47 @@ public class HoldingService {
         }
     }
 
-    public ResponseEntity<ApiResponse> addHolding(User user, AddHoldingRequest request) {
+    public ResponseEntity<ApiResponse> addHolding(User user, AddHoldingRequest request, String token) {
         try {
+            RestTemplate restTemplate = new RestTemplate();
+            HttpHeaders headers = new HttpHeaders();
+            headers.setBearerAuth(token);
+            HttpEntity<Void> entity = new HttpEntity<>(headers);
+
+            ResponseEntity<Map> response = restTemplate.exchange(
+                    "http://localhost:8080/api/crypto/getAllCryptos",
+                    HttpMethod.GET,
+                    entity,
+                    Map.class
+            );
+
+            if (response.getStatusCode() != HttpStatus.OK || !(Boolean) response.getBody().get("result")) {
+                return ResponseEntity.status(HttpStatus.BAD_GATEWAY)
+                        .body(new ApiResponse(false, "Failed to fetch crypto prices"));
+            }
+
+            List<Map<String, Object>> cryptoData = (List<Map<String, Object>>) response.getBody().get("data");
+
+            Map<String, Object> matchedCoin = cryptoData.stream()
+                    .filter(coin -> request.getCoinId().equalsIgnoreCase((String) coin.get("id")))
+                    .findFirst()
+                    .orElse(null);
+
+            if (matchedCoin == null) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                        .body(new ApiResponse(false, "Invalid coinId: " + request.getCoinId()));
+            }
+
+            double currentPrice = Double.parseDouble(matchedCoin.get("current_price").toString());
+            double quantity = request.getQuantity();
+
             Holding holding = new Holding();
             holding.setUser(user);
-            holding.setCoinId(request.getCoinId());
-            holding.setCoinName(request.getCoinName());
-            holding.setCoinSymbol(request.getCoinSymbol());
-            holding.setCoinQuantity(request.getQuantity());
-            holding.setBoughtPrice(request.getBoughtPrice().longValue());
+            holding.setCoinId((String) matchedCoin.get("id"));
+            holding.setCoinName((String) matchedCoin.get("name"));
+            holding.setCoinSymbol((String) matchedCoin.get("symbol"));
+            holding.setCoinQuantity((int) quantity);
+            holding.setBoughtPrice((long) currentPrice);
             holding.setBoughtDate(LocalDateTime.now());
             holding.setPricealert(null);
 
@@ -62,14 +94,12 @@ public class HoldingService {
         }
     }
 
-
     public ResponseEntity<ApiResponse> getMyNetValue(Long userId, String token) {
         try {
             List<Holding> holdings = holdingRepository.findByUserIdOrderByBoughtDateDesc(Math.toIntExact(userId));
             if (holdings.isEmpty()) {
                 return ResponseEntity.ok(new ApiResponse(true, "No holdings found", 0));
             }
-
 
             Map<String, AggregatedHolding> coinAggregates = new HashMap<>();
             for (Holding h : holdings) {
@@ -83,12 +113,10 @@ public class HoldingService {
                 });
             }
 
-
             RestTemplate restTemplate = new RestTemplate();
             String apiUrl = "http://localhost:8080/api/crypto/getAllCryptos";
-            // ResponseEntity<Map> response = restTemplate.getForEntity(apiUrl, Map.class);
             HttpHeaders headers = new HttpHeaders();
-            headers.setBearerAuth(token); // Adds "Authorization: Bearer <token>"
+            headers.setBearerAuth(token);
             HttpEntity<String> entity = new HttpEntity<>(headers);
 
             ResponseEntity<Map> response = restTemplate.exchange(
@@ -98,14 +126,12 @@ public class HoldingService {
                     Map.class
             );
 
-
             if (!response.getStatusCode().is2xxSuccessful()) {
                 return ResponseEntity.status(HttpStatus.BAD_GATEWAY)
                         .body(new ApiResponse(false, "Failed to fetch crypto prices"));
             }
 
             List<Map<String, Object>> cryptoData = (List<Map<String, Object>>) response.getBody().get("data");
-
 
             double totalValue = 0.0;
             List<Map<String, Object>> resultList = new ArrayList<>();
@@ -120,6 +146,10 @@ public class HoldingService {
                     double currentPrice = ((Number) crypto.get("current_price")).doubleValue();
                     double currentValue = currentPrice * agg.totalQuantity;
                     double profitLoss = currentValue - agg.totalInvestment;
+
+                    System.out.println("Coin: " + agg.coinName);
+                    System.out.println("Bought Value: " + agg.totalInvestment);
+                    System.out.println("Current Value: " + currentValue);
 
                     Map<String, Object> entry = new HashMap<>();
                     entry.put("coin_id", agg.coinId);
@@ -144,11 +174,9 @@ public class HoldingService {
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(new ApiResponse(false, "Error calculating net value "+e.getMessage()));
+                    .body(new ApiResponse(false, "Error calculating net value " + e.getMessage()));
         }
     }
-
-
     private static class AggregatedHolding {
         String coinId;
         String coinSymbol;
@@ -163,6 +191,5 @@ public class HoldingService {
             this.totalQuantity = totalQuantity;
             this.totalInvestment = totalInvestment;
         }
-    }
 
-}
+}}

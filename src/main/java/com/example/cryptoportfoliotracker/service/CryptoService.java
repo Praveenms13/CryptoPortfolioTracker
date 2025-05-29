@@ -16,10 +16,16 @@ public class CryptoService {
             RestTemplate restTemplate = new RestTemplate();
             ResponseEntity<Object[]> response = restTemplate.getForEntity(COINGECKO_URL, Object[].class);
 
-            if (response.getStatusCode() == HttpStatus.OK) {
-                return ResponseEntity.ok(new ApiResponse(true, "Cryptos fetched successfully", response.getBody()));
+            HttpStatus statusCode = HttpStatus.valueOf(response.getStatusCode().value());
+
+            if (statusCode == HttpStatus.OK || statusCode == HttpStatus.NOT_MODIFIED) {
+                return ResponseEntity.ok(new ApiResponse(
+                        true,
+                        statusCode == HttpStatus.OK ? "Cryptos fetched successfully" : "No update - using cached data",
+                        statusCode == HttpStatus.OK ? response.getBody() : null
+                ));
             } else {
-                return ResponseEntity.status(response.getStatusCode())
+                return ResponseEntity.status(statusCode)
                         .body(new ApiResponse(false, "Failed to fetch cryptos"));
             }
         } catch (Exception e) {
