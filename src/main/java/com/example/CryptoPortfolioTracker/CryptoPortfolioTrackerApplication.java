@@ -5,9 +5,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
 public class CryptoPortfolioTrackerApplication {
-
-    public static void main(String[] args) {
-        SpringApplication.run(CryptoPortfolioTrackerApplication.class, args);
-    }
-
+	public static void main(String[] args) {
+		SpringApplication.run(CryptoPortfolioTrackerApplication.class, args);
+		System.out.println("Custom Log: Application Started Successfully");
+	}
 }

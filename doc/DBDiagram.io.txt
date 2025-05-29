@@ -1,0 +1,58 @@
+Table users {
+  id integer [primary key]
+  username varchar
+  name varchar
+  password varchar
+  email varchar
+  registered_at timestamp
+}
+
+Table coin_API {
+  coin_id string [primary key]
+  coin_name varchar
+  coin_symbol varchar
+  coin_price bigint
+}
+
+Table logs {
+  id integer [primary key]
+  user_id integer
+  coin_id string
+  coin_name varchar
+  coin_symbol varchar
+  bought_price bigint
+  sold_price bigint
+  bought_date datetime
+  sold_date datetime
+}
+
+Table holdings {
+  id integer [primary key]
+  user_id integer
+  coin_id string
+  coin_name varchar
+  coin_symbol varchar
+  coin_quantity integer
+  bought_date datetime
+  bought_price bigint
+  pricealert double
+}
+
+Table price_alert {
+  id integer [primary key]
+  user_id integer
+  coin_id string
+  trigger_price integer
+  direction varchar
+  status boolean
+  triggered_at integer
+}
+
+Ref: logs.user_id > users.id
+Ref: logs.coin_id > coin_API.coin_id
+
+Ref: holdings.user_id > users.id
+Ref: holdings.coin_id > coin_API.coin_id
+
+Ref: price_alert.user_id > users.id
+Ref: price_alert.coin_id > coin_API.coin_id
