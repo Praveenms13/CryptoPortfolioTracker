@@ -1,0 +1,8 @@
+Module 1 - Authentication
+Login - /api/login - POST
+Register - /api/register - POST
+
+Get Logged In User Id with JWT Token - /api/users/getId - GET
+Get All Users - /api/users/getAllUsers - GET
+Get User - /api/users/getUser/1 - GET
+Update User - /api/users/updateUser/1 - PUT
