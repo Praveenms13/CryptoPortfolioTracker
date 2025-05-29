@@ -1,4 +1,4 @@
-package com.example.CryptoPortfolioTracker.service.Implementation;
+package com.example.cryptoportfoliotracker.service.Implementation;
 
 import java.util.List;
 import java.util.Optional;
@@ -9,26 +9,23 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.example.CryptoPortfolioTracker.config.JwtUtil;
-import com.example.CryptoPortfolioTracker.dto.ClientResponse;
-import com.example.CryptoPortfolioTracker.dto.LoginRequest;
-import com.example.CryptoPortfolioTracker.entity.User;
-import com.example.CryptoPortfolioTracker.enums.Role;
-import com.example.CryptoPortfolioTracker.model.ApiResponse;
-import com.example.CryptoPortfolioTracker.repository.UserRepository;
-import com.example.CryptoPortfolioTracker.service.AdminService;
+import com.example.cryptoportfoliotracker.dto.ClientResponse;
+import com.example.cryptoportfoliotracker.dto.LoginRequest;
+import com.example.cryptoportfoliotracker.entity.User;
+import com.example.cryptoportfoliotracker.enums.Role;
+import com.example.cryptoportfoliotracker.model.ApiResponse;
+import com.example.cryptoportfoliotracker.repository.UserRepository;
+import com.example.cryptoportfoliotracker.service.AdminService;
 
 @Service
 public class AdminServiceImpl implements AdminService {
 
     private final UserRepository userRepo;
     private final PasswordEncoder encoder;
-    private final JwtUtil jwtUtil;
 
-    public AdminServiceImpl(UserRepository userRepo, PasswordEncoder encoder, JwtUtil jwtUtil) {
+    public AdminServiceImpl(UserRepository userRepo, PasswordEncoder encoder) {
         this.userRepo = userRepo;
         this.encoder = encoder;
-        this.jwtUtil = jwtUtil;
     }
 
     @Override
@@ -83,8 +80,8 @@ public class AdminServiceImpl implements AdminService {
                             .body(new ApiResponse(false, "Access denied: Only ADMIN role is allowed"));
                 }
 
-                String token = jwtUtil.generateToken(user.getUsername());
-                return ResponseEntity.ok(new ApiResponse(true, "Login successful", token));
+                // Removed JWT token generation, just send a success message
+                return ResponseEntity.ok(new ApiResponse(true, "Login successful"));
             }
         }
 

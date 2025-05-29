@@ -1,6 +1,6 @@
-package com.example.CryptoPortfolioTracker.repository;
+package com.example.cryptoportfoliotracker.repository;
 
-import com.example.CryptoPortfolioTracker.entity.Holding;
+import com.example.cryptoportfoliotracker.entity.Holding;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

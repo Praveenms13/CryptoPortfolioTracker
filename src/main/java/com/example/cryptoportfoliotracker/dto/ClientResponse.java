@@ -1,4 +1,4 @@
-package com.example.CryptoPortfolioTracker.dto;
+package com.example.cryptoportfoliotracker.dto;
 
 public class ClientResponse {
     private Long id;

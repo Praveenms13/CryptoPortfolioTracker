@@ -1,4 +1,4 @@
-package com.example.CryptoPortfolioTracker.model;
+package com.example.cryptoportfoliotracker.model;
 
 public class ApiResponse {
     private boolean result;

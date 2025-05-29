@@ -1,29 +1,29 @@
-package com.example.CryptoPortfolioTracker.controller;
+package com.example.cryptoportfoliotracker.controller;
 
-import com.example.CryptoPortfolioTracker.dto.LoginRequest;
-import com.example.CryptoPortfolioTracker.dto.RegisterRequest;
-import com.example.CryptoPortfolioTracker.model.ApiResponse;
-import com.example.CryptoPortfolioTracker.service.AuthService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
+import com.example.cryptoportfoliotracker.dto.LoginRequest;
+import com.example.cryptoportfoliotracker.dto.RegisterRequest;
+import com.example.cryptoportfoliotracker.model.ApiResponse;
+import com.example.cryptoportfoliotracker.service.AuthService;
 import org.springframework.web.bind.annotation.*;
-
 @RestController
 @RequestMapping("/api")
 public class AuthController {
 
-    @Autowired
-    private AuthService authService;
+    private final AuthService authService;
+
+    public AuthController(AuthService authService) {
+        this.authService = authService;
+    }
 
     @PostMapping("/register")
-    public ResponseEntity<ApiResponse> register(@RequestBody RegisterRequest req) {
+    public ApiResponse register(@RequestBody RegisterRequest req) {
         System.out.println("Custom Log: Came into Register Request");
-        return authService.register(req);
+        return authService.register(req).getBody();
     }
 
     @PostMapping("/login")
-    public ResponseEntity<ApiResponse> login(@RequestBody LoginRequest req) {
+    public ApiResponse login(@RequestBody LoginRequest req) {
         System.out.println("Custom Log: Came into Login Request");
-        return authService.login(req);
+        return authService.login(req).getBody();
     }
 }

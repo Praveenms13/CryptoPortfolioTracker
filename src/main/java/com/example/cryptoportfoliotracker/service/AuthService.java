@@ -1,12 +1,11 @@
-package com.example.CryptoPortfolioTracker.service;
+package com.example.cryptoportfoliotracker.service;
 
-import com.example.CryptoPortfolioTracker.config.JwtUtil;
-import com.example.CryptoPortfolioTracker.dto.LoginRequest;
-import com.example.CryptoPortfolioTracker.dto.RegisterRequest;
-import com.example.CryptoPortfolioTracker.entity.User;
-import com.example.CryptoPortfolioTracker.enums.Role;
-import com.example.CryptoPortfolioTracker.model.ApiResponse;
-import com.example.CryptoPortfolioTracker.repository.UserRepository;
+import com.example.cryptoportfoliotracker.dto.LoginRequest;
+import com.example.cryptoportfoliotracker.dto.RegisterRequest;
+import com.example.cryptoportfoliotracker.entity.User;
+import com.example.cryptoportfoliotracker.enums.Role;
+import com.example.cryptoportfoliotracker.model.ApiResponse;
+import com.example.cryptoportfoliotracker.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,9 +22,6 @@ public class AuthService {
 
     @Autowired
     private PasswordEncoder encoder;
-
-    @Autowired
-    private JwtUtil jwtUtil;
 
     public ResponseEntity<ApiResponse> register(RegisterRequest req) {
         System.out.println("Custom Log: Came into Register Service");
@@ -44,6 +40,7 @@ public class AuthService {
         user.setName(req.getName());
         user.setEmail(req.getEmail());
         user.setPassword(encoder.encode(req.getPassword()));
+        user.setRole(Role.USER);  // set default role, if needed
 
         userRepo.save(user);
 
@@ -65,13 +62,12 @@ public class AuthService {
                             .body(new ApiResponse(false, "Access denied: Only USER role is allowed"));
                 }
 
-                String token = jwtUtil.generateToken(user.getUsername());
-                return ResponseEntity.ok(new ApiResponse(true, "Login successful", token));
+                // No token generation here anymore
+                return ResponseEntity.ok(new ApiResponse(true, "Login successful"));
             }
         }
 
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
                 .body(new ApiResponse(false, "Invalid credentials"));
     }
-
 }

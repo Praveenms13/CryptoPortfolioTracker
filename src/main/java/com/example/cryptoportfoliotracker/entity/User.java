@@ -1,6 +1,6 @@
-package com.example.CryptoPortfolioTracker.entity;
+package com.example.cryptoportfoliotracker.entity;
 
-import com.example.CryptoPortfolioTracker.enums.Role;
+import com.example.cryptoportfoliotracker.enums.Role;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
@@ -33,6 +33,13 @@ public class User {
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<PriceAlert> priceAlerts;
+
+    @Column(name = "session_token")
+    private String sessionToken;
+
+    public User() {
+        this.sessionToken = sessionToken;
+    }
 
     // Getters and Setters
 
@@ -71,5 +78,26 @@ public class User {
     }
     public void setRole(Role role) {
         this.role = role;
+    }
+
+
+    public String getSessionToken() {
+        return sessionToken;
+    }
+
+    public void setSessionToken(String sessionToken) {
+        this.sessionToken = sessionToken;
+    }
+
+    public Boolean getVerified() {
+        return isVerified;
+    }
+
+    public void setVerified(Boolean verified) {
+        isVerified = verified;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 }

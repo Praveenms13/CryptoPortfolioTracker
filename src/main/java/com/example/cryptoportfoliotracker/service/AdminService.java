@@ -1,7 +1,7 @@
-package com.example.CryptoPortfolioTracker.service;
+package com.example.cryptoportfoliotracker.service;
 
-import com.example.CryptoPortfolioTracker.dto.LoginRequest;
-import com.example.CryptoPortfolioTracker.model.ApiResponse;
+import com.example.cryptoportfoliotracker.dto.LoginRequest;
+import com.example.cryptoportfoliotracker.model.ApiResponse;
 import org.springframework.http.ResponseEntity;
 
 public interface AdminService {

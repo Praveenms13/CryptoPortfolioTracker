@@ -1,14 +1,12 @@
-package com.example.CryptoPortfolioTracker.service;
+package com.example.cryptoportfoliotracker.service;
 
-import com.example.CryptoPortfolioTracker.entity.User;
-import com.example.CryptoPortfolioTracker.model.ApiResponse;
-import com.example.CryptoPortfolioTracker.repository.UserRepository;
+import com.example.cryptoportfoliotracker.entity.User;
+import com.example.cryptoportfoliotracker.model.ApiResponse;
+import com.example.cryptoportfoliotracker.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 public class UserService {

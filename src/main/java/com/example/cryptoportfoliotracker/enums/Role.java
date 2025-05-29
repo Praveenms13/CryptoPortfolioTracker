@@ -1,4 +1,4 @@
-package com.example.CryptoPortfolioTracker.enums;
+package com.example.cryptoportfoliotracker.enums;
 
 public enum Role {
     USER,
