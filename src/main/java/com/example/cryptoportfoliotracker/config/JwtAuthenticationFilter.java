@@ -74,7 +74,11 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         String path = request.getServletPath();
         System.out.println(
                 "Custom Log: Filter Chain Initialized, bt this overriding of shouldNotFilter for skipping jwt for /api/login and /api/register");
+<<<<<<< HEAD
         return path.equals("/api/login") || path.equals("/api/register");
+=======
+        return path.equals("/api/login") || path.equals("/api/register") || path.equals("/api/admin/login");
+>>>>>>> origin/bhanu
     }
 
 }
