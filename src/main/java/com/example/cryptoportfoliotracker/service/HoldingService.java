@@ -1,4 +1,4 @@
-package com.example.cryptoportfoliotracker.service;
+package com.example.CryptoPortfolioTracker.service;
 
 import com.example.CryptoPortfolioTracker.dto.AddHoldingRequest;
 import com.example.CryptoPortfolioTracker.entity.Holding;
