@@ -1,10 +1,7 @@
 package com.example.CryptoPortfolioTracker.controller;
 
 import com.example.CryptoPortfolioTracker.config.JwtUtil;
-<<<<<<< HEAD
-=======
 import com.example.CryptoPortfolioTracker.dto.LoginRequest;
->>>>>>> origin/bhanu
 import com.example.CryptoPortfolioTracker.enums.Role;
 import com.example.CryptoPortfolioTracker.entity.User;
 import com.example.CryptoPortfolioTracker.model.ApiResponse;
@@ -29,14 +26,11 @@ public class AdminController {
         this.userRepository = userRepository;
     }
 
-<<<<<<< HEAD
-=======
     @PostMapping("/login")
     public ResponseEntity<ApiResponse> login(@RequestBody LoginRequest req) {
         System.out.println("Custom Log: Came into Login Request");
         return adminService.login(req);
     }
->>>>>>> origin/bhanu
     @GetMapping("/users")
     public ResponseEntity<ApiResponse> getAllUsers(HttpServletRequest request) {
         String token = request.getHeader("Authorization");
