@@ -18,7 +18,7 @@ public class AlertRequestDTO {
         this.direction = direction;
     }
 
-    // Getters and Setters
+
     public Long getUserId() { return userId; }
     public void setUserId(Long userId) { this.userId = userId; }
 

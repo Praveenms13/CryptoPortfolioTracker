@@ -1,12 +1,17 @@
 package com.example.cryptoportfoliotracker.service;
 
 import com.example.cryptoportfoliotracker.entity.Alert;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 public class NotificationService {
+@Autowired
+private EmailService emailService;
 
-    public void sendNotification(Alert alert, Double currentPrice) {
+@Autowired
+//private UserService userService;//after merging
+    public void sendNotification(Alert alert, Double currentPrice) throws Exception{//some exception
         // Simulate email notification
         String message = String.format(
                 "🚨 PRICE ALERT TRIGGERED!\n" +
@@ -21,7 +26,8 @@ public class NotificationService {
                 alert.getDirection(),
                 alert.getUserId()
         );
-
+//String receiverEmail = userService.getUserById(alert.getUserId()).getEmail();
+//emailService.sendEmail(receiverEmail,"subject", message);
         System.out.println(message);
 
         // TODO: Implement actual email sending logic here

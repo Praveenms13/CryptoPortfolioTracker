@@ -22,6 +22,8 @@ public class AlertSchedulerService {
     @Autowired
     private NotificationService notificationService;
 
+
+
     @Scheduled(fixedRate = 30000) // Check every 30 seconds
     public void checkAlerts() {
         List<Alert> pendingAlerts = alertRepository.findByStatus(AlertStatus.PENDING);
@@ -39,12 +41,19 @@ public class AlertSchedulerService {
                 boolean shouldTrigger = checkTriggerCondition(alert, currentPrice);
 
                 if (shouldTrigger) {
-                    alert.setStatus(AlertStatus.TRIGGERED);
-                    alert.setTriggeredAt(LocalDateTime.now());
-                    alertRepository.save(alert);
+                    try{
+                        notificationService.sendNotification(alert, currentPrice);
+                    }
+                    catch (Exception e){
+                        e.printStackTrace();//exception from notification service
+                    }
+                    finally{
+                        System.out.println("Alert triggered for " + alert.getSymbol() + " at $" + currentPrice);
+                        alert.setStatus(AlertStatus.TRIGGERED);
+                        alert.setTriggeredAt(LocalDateTime.now());
+                        alertRepository.save(alert);
 
-                    notificationService.sendNotification(alert, currentPrice);
-                    System.out.println("Alert triggered for " + alert.getSymbol() + " at $" + currentPrice);
+                    }
                 }
             } catch (Exception e) {
                 System.err.println("Error processing alert ID " + alert.getId() + ": " + e.getMessage());
@@ -53,7 +62,7 @@ public class AlertSchedulerService {
     }
 
     private boolean checkTriggerCondition(Alert alert, Double currentPrice) {
-        return (alert.getDirection() == AlertDirection.ABOVE && currentPrice >= alert.getTriggerPrice()) ||
-                (alert.getDirection() == AlertDirection.BELOW && currentPrice <= alert.getTriggerPrice());
+        return (alert.getDirection() == AlertDirection.ABOVE && currentPrice <= alert.getTriggerPrice()) ||
+                (alert.getDirection() == AlertDirection.BELOW && currentPrice >= alert.getTriggerPrice());
 }
 }
