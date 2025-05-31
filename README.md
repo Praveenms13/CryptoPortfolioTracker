@@ -161,6 +161,8 @@ This ER diagram models Users, Admins, Holdings, and Logs with relationships amon
 - An Admin can review logs but does not directly manage holdings or users.  
 
 ---
+![image](https://github.com/user-attachments/assets/afe73b68-558e-45cf-8828-104b9260df93)
+
 
 # Database Diagram
 
@@ -168,6 +170,8 @@ This database diagram models the core components of a Crypto Portfolio Tracker a
 It consists of four main tables: `users`, `holdings`, `logs`, and `coin_API`.
 
 ---
+![image](https://github.com/user-attachments/assets/8793bd4c-28bf-4bc6-bec9-28d8ce6f66e2)
+
 
 # 🧠 Key Concepts for Freshers
 
