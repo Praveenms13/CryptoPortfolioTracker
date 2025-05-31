@@ -148,6 +148,8 @@ Entities like User, PriceAlert, Alert, Holding, and Log manage data and behavior
 Services like PriceService, AlertService, AlertSchedulerService, AdminService, CryptoService, CustomUserDetailsService, EmailService, HoldingService, NotificationService, and UserService provide business logic.
 
 ---
+![image](https://github.com/user-attachments/assets/bec51212-66aa-499b-9757-c8dff64f5e81)
+
 
 # ER Diagram
 
