@@ -182,4 +182,121 @@ It consists of four main tables: `users`, `holdings`, `logs`, and `coin_API`.
 ---
 
 # 🗂 Project Structure
+```
+com.example.CryptoPortfolioTracker
+├── config
+│ └── SecurityConfig.java
+├── controller
+│ ├── AdminController.java
+│ ├── AlertController.java
+│ ├── CryptoController.java
+│ ├── CryptoControllerToGetPriceSymbol.java
+│ ├── HoldingController.java
+│ └── UserController.java
+├── dto
+│ ├── AddHoldingRequest.java
+│ ├── AlertRequestDTO.java
+│ ├── ClientResponse.java
+│ ├── CryptoData.java
+│ ├── LoginRequest.java
+│ ├── PriceResponse.java
+│ └── RegisterRequest.java
+├── entity
+│ ├── Alert.java
+│ ├── Holding.java
+│ ├── Log.java
+│ ├── PriceAlert.java
+│ └── User.java
+├── enums
+│ ├── AlertDirection.java
+│ ├── AlertStatus.java
+│ └── Role.java
+├── exception
+│ ├── GlobalExceptionHandler.java
+│ └── ResourceNotFoundException.java
+├── model
+│ └── ApiResponse.java
+├── repository
+│ ├── AlertRepository.java
+│ ├── HoldingRepository.java
+│ └── UserRepository.java
+├── scheduler
+│ └── AlertSchedulerService.java
+├── service
+│ ├── Implementation
+│ │ └── AdminServiceImpl.java
+│ ├── AdminService.java
+│ ├── AlertService.java
+│ ├── CryptoService.java
+│ ├── CustomUserDetailsService.java
+│ ├── EmailService.java
+│ ├── HoldingService.java
+│ ├── NotificationService.java
+│ ├── PriceService.java
+│ └── UserService.java
+├── CryptoPortfolioTrackerApplication.java
+└── README.md
+```
 
+
+---
+
+# 🚀 How to Run
+
+## ✅ Prerequisites
+
+- Java 17+  
+- Maven  
+- MySQL  
+- Postman (for testing APIs)  
+
+## 🧪 Steps
+
+1. Clone the project:  
+```bash
+git clone https://github.com/your-username/CryptoPortfolioTracker.git
+cd CryptoPortfolioTracker
+2. Create a database:
+    CREATE DATABASE CryptoPortfolioTracker;
+3. Configure application.properties:
+```
+    spring.application.name=CryptoPortfolioTracker
+    spring.datasource.url=jdbc:mysql://10.9.124.199:3306/CryptoPortfolioTracker?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
+    spring.datasource.username=root
+    spring.datasource.password=password
+    spring.jpa.hibernate.ddl-auto=update
+    spring.jpa.show-sql=true
+    spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.MySQL8Dialect
+    
+    spring.mail.host=smtp-relay.brevo.com
+    spring.mail.port=587
+    spring.mail.username=8e3121001@smtp-brevo.com
+    spring.mail.password=h1nr2WQwZysT5zVg
+    spring.mail.properties.mail.smtp.auth=true
+    spring.mail.properties.mail.smtp.starttls.enable=true
+```
+4. Build and run:
+```bash
+    ./mvnw clean install
+    ./mvnw spring-boot:run
+5. Test using Swagger or Postman.
+
+### 📦 Optional Enhancements
+
+| Feature                       | Benefit                         |
+| ----------------------------- | ------------------------------- |
+| Email alerts                  | Better user notification        |
+| Graphical reports (charts)    | Easier to visualize performance |
+| Export portfolio to PDF/Excel | For offline record-keeping      |
+| Mobile app integration        | Future frontend possibilities   |
+| WebSocket price updates       | Live price tracking             |
+
+### 👩‍💻 Contributors
+
+| Name              | Role                                                                                                                   |
+| ----------------- | ---------------------------------------------------------------------------------------------------------------------- |
+| Praveen           | Project Lead, User Module, GlobalExceptionHandling Module, Basic authentication using session\_token & Scheduler Logic |
+| Aayushi           | Alert module                                                                                                           |
+| Kaushik, Harshnie | Price Fetcher, Gain Calculator                                                                                         |
+| Navya             | Fetch API Module                                                                                                       |
+| Lakshmi Bhanu     | Admin Module and Junit testing                                                                                         |
