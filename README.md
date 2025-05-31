@@ -253,13 +253,11 @@ com.example.CryptoPortfolioTracker
 ## 🧪 Steps
 
 1. Clone the project:  
-```bash
 git clone https://github.com/your-username/CryptoPortfolioTracker.git
 cd CryptoPortfolioTracker
 2. Create a database:
     CREATE DATABASE CryptoPortfolioTracker;
 3. Configure application.properties:
-```
     spring.application.name=CryptoPortfolioTracker
     spring.datasource.url=jdbc:mysql://10.9.124.199:3306/CryptoPortfolioTracker?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
     spring.datasource.username=root
@@ -274,9 +272,7 @@ cd CryptoPortfolioTracker
     spring.mail.password=h1nr2WQwZysT5zVg
     spring.mail.properties.mail.smtp.auth=true
     spring.mail.properties.mail.smtp.starttls.enable=true
-```
 4. Build and run:
-```bash
     ./mvnw clean install
     ./mvnw spring-boot:run
 5. Test using Swagger or Postman.
