@@ -1,19 +1,26 @@
 package com.example.CryptoPortfolioTracker.controller;
 
-import com.example.CryptoPortfolioTracker.service.PriceService;
+import com.example.CryptoPortfolioTracker.service.CryptoService;
+import com.example.CryptoPortfolioTracker.model.ApiResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-/*
+import com.example.CryptoPortfolioTracker.service.PriceService;
+
 @RestController
 @RequestMapping("/api/crypto")
-public class CryptoControllerToGetPriceSymbol {
+public class CryptoController {
+    @Autowired
+    private CryptoService cryptoService;
 
     @Autowired
     private PriceService priceService;
 
-    @GetMapping("/getPrice/{symbol}")
+    @GetMapping("/getAllCryptos")
+    public ResponseEntity<ApiResponse> getAllCryptos() {
+        return cryptoService.fetchAllCryptos();
+    }
     public ResponseEntity<?> getPrice(@PathVariable String symbol) {
         try {
             Double price = priceService.getPrice(symbol);
@@ -28,5 +35,3 @@ public class CryptoControllerToGetPriceSymbol {
         }
     }
 }
-
- */

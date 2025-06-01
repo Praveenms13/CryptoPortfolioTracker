@@ -32,7 +32,7 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
-                        .anyRequest().permitAll()   // <-- Allow all requests without auth
+                        .anyRequest().permitAll()
                 )
                 .formLogin(form -> form.disable());
 

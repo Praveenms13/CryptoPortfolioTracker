@@ -1,6 +1,7 @@
 package com.example.CryptoPortfolioTracker.service;
 
 import com.example.CryptoPortfolioTracker.dto.AddHoldingRequest;
+import com.example.CryptoPortfolioTracker.dto.HoldingDTO;
 import com.example.CryptoPortfolioTracker.entity.Holding;
 import com.example.CryptoPortfolioTracker.entity.User;
 import com.example.CryptoPortfolioTracker.model.ApiResponse;
@@ -13,6 +14,7 @@ import org.springframework.web.client.RestTemplate;
 
 import java.time.LocalDateTime;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class HoldingService {
@@ -28,10 +30,14 @@ public class HoldingService {
             List<Holding> holdings = holdingRepository.findByUserIdOrderByBoughtDateDesc(userId);
 
             if (holdings.isEmpty()) {
-                return ResponseEntity.ok(new ApiResponse(true, "No holdings found for this user", holdings));
+                return ResponseEntity.ok(new ApiResponse(true, "No holdings found for this user", Collections.emptyList()));
             }
 
-            return ResponseEntity.ok(new ApiResponse(true, "Holdings fetched successfully", holdings));
+            List<HoldingDTO> holdingDTOs = holdings.stream()
+                    .map(HoldingDTO::new)
+                    .collect(Collectors.toList());
+
+            return ResponseEntity.ok(new ApiResponse(true, "Holdings fetched successfully", holdingDTOs));
 
         } catch (Exception e) {
             System.err.println("Error fetching holdings: " + e.getMessage());
@@ -39,6 +45,7 @@ public class HoldingService {
                     .body(new ApiResponse(false, "Error fetching holdings"));
         }
     }
+
 
     public ResponseEntity<ApiResponse> addHolding(User user, AddHoldingRequest request, String token) {
         try {
@@ -100,17 +107,20 @@ public class HoldingService {
             if (holdings.isEmpty()) {
                 return ResponseEntity.ok(new ApiResponse(true, "No holdings found", 0));
             }
+            Map<String, Double> coinQuantityMap = new HashMap<>();
+            Map<String, Double> coinInvestmentMap = new HashMap<>();
+            Map<String, String> coinSymbolMap = new HashMap<>();
+            Map<String, String> coinNameMap = new HashMap<>();
+            for (Holding holding : holdings) {
+                String coinId = holding.getCoinId();
+                double quantity = holding.getCoinQuantity();
+                double investment = holding.getBoughtPrice() * holding.getCoinQuantity();
+                coinQuantityMap.put(coinId, coinQuantityMap.getOrDefault(coinId, 0.0) + quantity);
+                coinInvestmentMap.put(coinId, coinInvestmentMap.getOrDefault(coinId, 0.0) + investment);
 
-            Map<String, AggregatedHolding> coinAggregates = new HashMap<>();
-            for (Holding h : holdings) {
-                coinAggregates.compute(h.getCoinId(), (k, v) -> {
-                    if (v == null) {
-                        v = new AggregatedHolding(h.getCoinId(), h.getCoinSymbol(), h.getCoinName(), 0.0, 0.0);
-                    }
-                    v.totalQuantity += h.getCoinQuantity();
-                    v.totalInvestment += h.getBoughtPrice() * h.getCoinQuantity();
-                    return v;
-                });
+
+                coinSymbolMap.put(coinId, holding.getCoinSymbol());
+                coinNameMap.put(coinId, holding.getCoinName());
             }
 
             RestTemplate restTemplate = new RestTemplate();
@@ -118,48 +128,45 @@ public class HoldingService {
             HttpHeaders headers = new HttpHeaders();
             headers.setBearerAuth(token);
             HttpEntity<String> entity = new HttpEntity<>(headers);
-
             ResponseEntity<Map> response = restTemplate.exchange(
                     apiUrl,
                     HttpMethod.GET,
                     entity,
                     Map.class
             );
-
             if (!response.getStatusCode().is2xxSuccessful()) {
                 return ResponseEntity.status(HttpStatus.BAD_GATEWAY)
                         .body(new ApiResponse(false, "Failed to fetch crypto prices"));
             }
 
             List<Map<String, Object>> cryptoData = (List<Map<String, Object>>) response.getBody().get("data");
-
             double totalValue = 0.0;
             List<Map<String, Object>> resultList = new ArrayList<>();
-
-            for (AggregatedHolding agg : coinAggregates.values()) {
+            for (String coinId : coinQuantityMap.keySet()) {
                 Optional<Map<String, Object>> cryptoOpt = cryptoData.stream()
-                        .filter(c -> c.get("id").equals(agg.coinId))
+                        .filter(c -> c.get("id").equals(coinId))
                         .findFirst();
-
                 if (cryptoOpt.isPresent()) {
                     Map<String, Object> crypto = cryptoOpt.get();
                     double currentPrice = ((Number) crypto.get("current_price")).doubleValue();
-                    double currentValue = currentPrice * agg.totalQuantity;
-                    double profitLoss = currentValue - agg.totalInvestment;
+                    double totalQuantity = coinQuantityMap.get(coinId);
+                    double totalInvestment = coinInvestmentMap.get(coinId);
+                    String coinSymbol = coinSymbolMap.get(coinId);
+                    String coinName = coinNameMap.get(coinId);
 
-                    System.out.println("Coin: " + agg.coinName);
-                    System.out.println("Bought Value: " + agg.totalInvestment);
+                    double currentValue = currentPrice * totalQuantity;
+                    double profitLoss = currentValue - totalInvestment;
+                    System.out.println("Coin: " + coinName);
+                    System.out.println("Bought Value: " + totalInvestment);
                     System.out.println("Current Value: " + currentValue);
-
                     Map<String, Object> entry = new HashMap<>();
-                    entry.put("coin_id", agg.coinId);
-                    entry.put("coin_name", agg.coinName);
-                    entry.put("coin_symbol", agg.coinSymbol);
-                    entry.put("quantity", agg.totalQuantity);
-                    entry.put("invested", agg.totalInvestment);
+                    entry.put("coin_id", coinId);
+                    entry.put("coin_name", coinName);
+                    entry.put("coin_symbol", coinSymbol);
+                    entry.put("quantity", totalQuantity);
+                    entry.put("invested", totalInvestment);
                     entry.put("current_value", currentValue);
                     entry.put("profit_loss", profitLoss);
-
                     totalValue += currentValue;
                     resultList.add(entry);
                 }
@@ -177,19 +184,4 @@ public class HoldingService {
                     .body(new ApiResponse(false, "Error calculating net value " + e.getMessage()));
         }
     }
-    private static class AggregatedHolding {
-        String coinId;
-        String coinSymbol;
-        String coinName;
-        double totalQuantity;
-        double totalInvestment;
-
-        AggregatedHolding(String coinId, String coinSymbol, String coinName, double totalQuantity, double totalInvestment) {
-            this.coinId = coinId;
-            this.coinSymbol = coinSymbol;
-            this.coinName = coinName;
-            this.totalQuantity = totalQuantity;
-            this.totalInvestment = totalInvestment;
-        }
-
-}}
+}

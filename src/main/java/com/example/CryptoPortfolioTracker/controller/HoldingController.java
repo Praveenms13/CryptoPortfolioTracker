@@ -84,9 +84,8 @@ public class HoldingController {
 
     @Autowired
     private UserRepository userRepository;
-
-    // Helper method to check user and token validity for reuse
     private Optional<ResponseEntity<ApiResponse>> checkUserAndToken(Long userId, String token) {
+        System.out.println(userId + " " + token);
         Optional<User> userOptional = userRepository.findById(userId);
         if (userOptional.isEmpty()) {
             return Optional.of(ResponseEntity.status(HttpStatus.NOT_FOUND)
@@ -115,17 +114,14 @@ public class HoldingController {
                                                   @RequestParam String token) {
         Optional<ResponseEntity<ApiResponse>> errorResponse = checkUserAndToken(userId, token);
         if (errorResponse.isPresent()) return errorResponse.get();
-
-        // Since user is validated, fetch user object
         User user = userRepository.findById(userId).get();
-        return holdingService.addHolding(user, request, null); // token check done here, so passing null
+        return holdingService.addHolding(user, request, null);
     }
 
     @GetMapping("/getMyNetValue")
     public ResponseEntity<ApiResponse> getMyNetValue(@RequestParam Long userId, @RequestParam String token) {
         Optional<ResponseEntity<ApiResponse>> errorResponse = checkUserAndToken(userId, token);
         if (errorResponse.isPresent()) return errorResponse.get();
-
         return holdingService.getMyNetValue(userId, null);
     }
 }

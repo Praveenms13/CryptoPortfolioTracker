@@ -1,12 +1,14 @@
 package com.example.CryptoPortfolioTracker.dto;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 
+@Schema(description = "Login request object")
 public class LoginRequest {
 
-    @JsonProperty("username")
+    @Schema(description = "Username or email of the user", example = "johndoe")
     private String usernameOrEmail;
 
+    @Schema(description = "Password of the user", example = "securePassword123")
     private String password;
 
     public String getUsernameOrEmail() {

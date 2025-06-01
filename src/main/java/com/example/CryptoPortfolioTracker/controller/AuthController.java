@@ -3,8 +3,9 @@ package com.example.CryptoPortfolioTracker.controller;
 import com.example.CryptoPortfolioTracker.dto.LoginRequest;
 import com.example.CryptoPortfolioTracker.dto.RegisterRequest;
 import com.example.CryptoPortfolioTracker.model.ApiResponse;
-import com.example.CryptoPortfolioTracker.service.AuthService;
+// import com.example.CryptoPortfolioTracker.service.AuthService;
 import org.springframework.web.bind.annotation.*;
+/*
 @RestController
 @RequestMapping("/api")
 public class AuthController {
@@ -27,3 +28,4 @@ public class AuthController {
         return authService.login(req).getBody();
     }
 }
+*/
