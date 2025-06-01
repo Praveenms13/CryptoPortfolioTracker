@@ -44,6 +44,14 @@ public class Alert {
         this.createdAt = LocalDateTime.now();
     }
 
+    public Alert(long userId, String btc, double triggerPrice, String up) {
+        this.userId = userId;
+        this.symbol = btc;
+        this.triggerPrice = triggerPrice;
+        this.direction = AlertDirection.valueOf(up);
+        this.status = AlertStatus.PENDING;
+    }
+
     // Getters and Setters
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }

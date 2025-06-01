@@ -23,7 +23,7 @@ public class HoldingService {
     private LogRepository logRepository;
     @Autowired
     private UserRepository userRepository;
-    private Optional<ResponseEntity<ApiResponse>> validateUser(Long userId, String token) {
+    Optional<ResponseEntity<ApiResponse>> validateUser(Long userId, String token) {
         Optional<User> userOptional = userRepository.findById(userId);
         if (userOptional.isEmpty()) {
             return Optional.of(ResponseEntity.status(HttpStatus.NOT_FOUND)
@@ -145,6 +145,17 @@ public class HoldingService {
                     .body(new ApiResponse(false, "Error fetching holdings and net value: " + e.getMessage()));
         }
     }
+
+    protected ResponseEntity<Map> callCryptoApi(String token) {
+        RestTemplate restTemplate = new RestTemplate();
+        HttpHeaders headers = new HttpHeaders();
+        headers.setBearerAuth(token);
+        HttpEntity<Void> entity = new HttpEntity<>(headers);
+        return restTemplate.exchange("http://localhost:8080/api/crypto/getAllCryptos",
+                HttpMethod.GET, entity, Map.class);
+    }
+
+
     static class CoinInfo {
         String coinId;
         String coinName;

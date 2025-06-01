@@ -11,6 +11,11 @@ public class LoginRequest {
     // @Schema(description = "Password of the user", example = "securePassword123")
     private String password;
 
+    public LoginRequest(String admin, String password) {
+        this.usernameOrEmail =  admin;
+        this.password = password;
+    }
+
     public String getUsernameOrEmail() {
         return usernameOrEmail;
     }

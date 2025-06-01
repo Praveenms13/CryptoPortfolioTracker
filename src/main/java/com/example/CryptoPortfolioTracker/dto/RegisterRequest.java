@@ -7,6 +7,13 @@ public class RegisterRequest {
     private String password;
     private String role;
 
+    public RegisterRequest(String user1, String s, String pass123, String userOne) {
+        this.username = user1;
+        this.name = s;
+        this.password = pass123;
+        this.email = userOne;
+    }
+
     public String getUsername() {
         return username;
     }

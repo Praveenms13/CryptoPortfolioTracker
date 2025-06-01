@@ -11,10 +11,20 @@ public class CryptoService {
     private final String COINGECKO_URL = "https://api.coingecko.com/api/v3/coins/markets" +
             "?vs_currency=usd&order=market_cap_desc&per_page=250&page=1&x_cg_demo_api_key=CG-c7Eoq1PyYSu3r7Hg2YC6DmUC";
 
+    private RestTemplate restTemplate = null;
+
+    public CryptoService() {
+        this.restTemplate = restTemplate;
+    }
+
+    // Added this helper method to facilitate spying/mocking RestTemplate call
+    protected ResponseEntity<Object[]> callRestTemplate() {
+        return restTemplate.getForEntity(COINGECKO_URL, Object[].class);
+    }
+
     public ResponseEntity<ApiResponse> fetchAllCryptos() {
         try {
-            RestTemplate restTemplate = new RestTemplate();
-            ResponseEntity<Object[]> response = restTemplate.getForEntity(COINGECKO_URL, Object[].class);
+            ResponseEntity<Object[]> response = callRestTemplate();
 
             HttpStatus statusCode = HttpStatus.valueOf(response.getStatusCode().value());
 
