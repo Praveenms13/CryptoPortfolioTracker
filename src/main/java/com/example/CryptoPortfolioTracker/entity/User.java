@@ -1,11 +1,21 @@
 package com.example.CryptoPortfolioTracker.entity;
 
-import com.example.CryptoPortfolioTracker.enums.Role;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import jakarta.persistence.*;
-
 import java.time.LocalDateTime;
 import java.util.List;
+
+import com.example.CryptoPortfolioTracker.enums.Role;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "users")
@@ -18,11 +28,10 @@ public class User {
     private String name;
     private String email;
     private String password;
-    private Boolean isVerified = false;
     private LocalDateTime registeredAt = LocalDateTime.now();
 
     @Enumerated(EnumType.STRING)
-    private Role role = Role.USER;  // Default role
+    private Role role = Role.USER;  
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Log> logs;
@@ -41,8 +50,6 @@ public class User {
         this.sessionToken = sessionToken;
     }
 
-    // Getters and Setters
-
     public Long getId() { return (long) id; }
     public void setId(Long id) { this.id = Math.toIntExact(id); }
 
@@ -57,9 +64,6 @@ public class User {
 
     public String getPassword() { return password; }
     public void setPassword(String password) { this.password = password; }
-
-    public Boolean getIsVerified() { return isVerified; }
-    public void setIsVerified(Boolean isVerified) { this.isVerified = isVerified; }
 
     public LocalDateTime getRegisteredAt() { return registeredAt; }
     public void setRegisteredAt(LocalDateTime registeredAt) { this.registeredAt = registeredAt; }
@@ -88,15 +92,6 @@ public class User {
     public void setSessionToken(String sessionToken) {
         this.sessionToken = sessionToken;
     }
-
-    public Boolean getVerified() {
-        return isVerified;
-    }
-
-    public void setVerified(Boolean verified) {
-        isVerified = verified;
-    }
-
     public void setId(int id) {
         this.id = id;
     }

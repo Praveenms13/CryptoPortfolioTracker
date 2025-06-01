@@ -1,38 +1,46 @@
 package com.example.CryptoPortfolioTracker.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
 import com.example.CryptoPortfolioTracker.dto.LoginRequest;
+import com.example.CryptoPortfolioTracker.entity.User;
 import com.example.CryptoPortfolioTracker.model.ApiResponse;
-import com.example.CryptoPortfolioTracker.repository.UserRepository;
 import com.example.CryptoPortfolioTracker.service.AdminService;
-import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/admin")
 public class AdminController {
-
-    private final AdminService adminService;
-    private final UserRepository userRepository;
-
-    public AdminController(AdminService adminService, UserRepository userRepository) {
-        this.adminService = adminService;
-        this.userRepository = userRepository;
-    }
+    @Autowired
+    private AdminService adminService;
 
     @PostMapping("/login")
-    public ApiResponse login(@RequestBody LoginRequest req) {
-        System.out.println("Custom Log: Came into Login Request");
-        return adminService.login(req).getBody();
+    public ApiResponse login(@RequestBody LoginRequest request) {
+        return adminService.loginAdmin(request).getBody();
+    }
+
+    @PutMapping("/updateUser/{id}")
+    public ResponseEntity<ApiResponse> updateAdmin(@PathVariable Long id, @RequestBody User user,
+            @RequestParam String token) {
+        return adminService.updateAdmin(id, user, token);
     }
 
     @GetMapping("/users")
-    public ApiResponse getAllUsers() {
-        // No JWT or auth checks here
-        return adminService.getAllUsers().getBody();
+    public ResponseEntity<ApiResponse> getAllUsers(@RequestParam String token) {
+        return adminService.getAllUsers(token);
     }
 
     @GetMapping("/user/{id}")
-    public ApiResponse getUserById(@PathVariable Long id) {
-        // No JWT or auth checks here
-        return adminService.getUserById(id).getBody();
+    public ResponseEntity<ApiResponse> getUserById(@PathVariable Long id, @RequestParam String token) {
+        return adminService.getUserById(id, token);
     }
+
 }

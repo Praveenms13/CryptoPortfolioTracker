@@ -21,6 +21,7 @@ public class CryptoController {
     public ResponseEntity<ApiResponse> getAllCryptos() {
         return cryptoService.fetchAllCryptos();
     }
+    @GetMapping("/getPrice/{symbol}")
     public ResponseEntity<?> getPrice(@PathVariable String symbol) {
         try {
             Double price = priceService.getPrice(symbol);
@@ -34,4 +35,6 @@ public class CryptoController {
                     .body("Error fetching price for symbol: " + symbol);
         }
     }
+
+
 }

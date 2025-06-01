@@ -11,7 +11,7 @@ public class Log {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "user_id") 
     private User user;
 
     private String coinId;
@@ -19,6 +19,7 @@ public class Log {
     private String coinSymbol;
     private Long boughtPrice;
     private Long soldPrice;
+    private int quantity;
     private LocalDateTime boughtDate;
     private LocalDateTime soldDate;
 
@@ -31,6 +32,9 @@ public class Log {
     public String getCoinId() { return coinId; }
     public void setCoinId(String coinId) { this.coinId = coinId; }
 
+    public int getQuantity() { return quantity; }
+    public void setQuantity(int quantity) { this.quantity = quantity; }
+    
     public String getCoinName() { return coinName; }
     public void setCoinName(String coinName) { this.coinName = coinName; }
 
