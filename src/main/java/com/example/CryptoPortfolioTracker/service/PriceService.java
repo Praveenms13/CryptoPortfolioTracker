@@ -11,14 +11,10 @@ import java.util.List;
 
 @Service
 public class PriceService {
-    // private RestTemplate restTemplate = new RestTemplate();
+    private final RestTemplate restTemplate = new RestTemplate();
 
-    private final RestTemplate restTemplate;
+    // External API endpoint - CoinGecko
     private static final String EXTERNAL_API_URL = "https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=250&page=1&x_cg_demo_api_key=CG-c7Eoq1PyYSu3r7Hg2YC6DmUC";
-
-    public PriceService(RestTemplate restTemplate) {
-        this.restTemplate = restTemplate;
-    }
 
     public Double getPrice(String symbol) {
         try {

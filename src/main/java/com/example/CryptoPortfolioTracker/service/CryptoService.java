@@ -1,6 +1,7 @@
 package com.example.CryptoPortfolioTracker.service;
 
 import com.example.CryptoPortfolioTracker.model.ApiResponse;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -11,13 +12,13 @@ public class CryptoService {
     private final String COINGECKO_URL = "https://api.coingecko.com/api/v3/coins/markets" +
             "?vs_currency=usd&order=market_cap_desc&per_page=250&page=1&x_cg_demo_api_key=CG-c7Eoq1PyYSu3r7Hg2YC6DmUC";
 
-    private RestTemplate restTemplate = null;
+    private final RestTemplate restTemplate;
 
-    public CryptoService() {
+    @Autowired
+    public CryptoService(RestTemplate restTemplate) {
         this.restTemplate = restTemplate;
     }
 
-    // Added this helper method to facilitate spying/mocking RestTemplate call
     protected ResponseEntity<Object[]> callRestTemplate() {
         return restTemplate.getForEntity(COINGECKO_URL, Object[].class);
     }

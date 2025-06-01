@@ -18,6 +18,8 @@ class CryptoServiceTest {
     @Mock
     private RestTemplate restTemplate;
 
+    private final String COINGECKO_URL = "https://api.coingecko.com/api/v3/coins/markets" +
+            "?vs_currency=usd&order=market_cap_desc&per_page=250&page=1&x_cg_demo_api_key=CG-c7Eoq1PyYSu3r7Hg2YC6DmUC";
 
     @BeforeEach
     void setUp() {
@@ -26,13 +28,12 @@ class CryptoServiceTest {
 
     @Test
     void fetchAllCryptos_successResponse_returnsApiResponseWithData() {
-        Object[] mockBody = new Object[] { "bitcoin", "ethereum" };
+        Object[] mockBody = new Object[]{"bitcoin", "ethereum"};
         ResponseEntity<Object[]> mockResponse = new ResponseEntity<>(mockBody, HttpStatus.OK);
-        CryptoService spyService = spy(new CryptoService());
 
-        doReturn(mockResponse).when(spyService).callRestTemplate();
+        when(restTemplate.getForEntity(COINGECKO_URL, Object[].class)).thenReturn(mockResponse);
 
-        ResponseEntity<ApiResponse> response = spyService.fetchAllCryptos();
+        ResponseEntity<ApiResponse> response = cryptoService.fetchAllCryptos();
 
         assertTrue(response.getBody().isResult());
         assertEquals("Cryptos fetched successfully", response.getBody().getMessage());
@@ -43,11 +44,9 @@ class CryptoServiceTest {
     void fetchAllCryptos_notModifiedResponse_returnsApiResponseWithNoUpdateMessage() {
         ResponseEntity<Object[]> mockResponse = new ResponseEntity<>(null, HttpStatus.NOT_MODIFIED);
 
-        CryptoService spyService = spy(new CryptoService());
+        when(restTemplate.getForEntity(COINGECKO_URL, Object[].class)).thenReturn(mockResponse);
 
-        doReturn(mockResponse).when(spyService).callRestTemplate();
-
-        ResponseEntity<ApiResponse> response = spyService.fetchAllCryptos();
+        ResponseEntity<ApiResponse> response = cryptoService.fetchAllCryptos();
 
         assertTrue(response.getBody().isResult());
         assertEquals("No update - using cached data", response.getBody().getMessage());
@@ -58,11 +57,9 @@ class CryptoServiceTest {
     void fetchAllCryptos_errorStatus_returnsFailureResponse() {
         ResponseEntity<Object[]> mockResponse = new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
 
-        CryptoService spyService = spy(new CryptoService());
+        when(restTemplate.getForEntity(COINGECKO_URL, Object[].class)).thenReturn(mockResponse);
 
-        doReturn(mockResponse).when(spyService).callRestTemplate();
-
-        ResponseEntity<ApiResponse> response = spyService.fetchAllCryptos();
+        ResponseEntity<ApiResponse> response = cryptoService.fetchAllCryptos();
 
         assertFalse(response.getBody().isResult());
         assertEquals("Failed to fetch cryptos", response.getBody().getMessage());
@@ -70,11 +67,10 @@ class CryptoServiceTest {
 
     @Test
     void fetchAllCryptos_exceptionThrown_returnsErrorResponse() {
-        CryptoService spyService = spy(new CryptoService());
+        when(restTemplate.getForEntity(COINGECKO_URL, Object[].class))
+                .thenThrow(new RuntimeException("API down"));
 
-        doThrow(new RuntimeException("API down")).when(spyService).callRestTemplate();
-
-        ResponseEntity<ApiResponse> response = spyService.fetchAllCryptos();
+        ResponseEntity<ApiResponse> response = cryptoService.fetchAllCryptos();
 
         assertFalse(response.getBody().isResult());
         assertTrue(response.getBody().getMessage().contains("Error fetching cryptos"));
