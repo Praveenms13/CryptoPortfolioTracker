@@ -196,22 +196,20 @@ com.example.CryptoPortfolioTracker
 │ ├── AdminController.java
 │ ├── AlertController.java
 │ ├── CryptoController.java
-│ ├── CryptoControllerToGetPriceSymbol.java
 │ ├── HoldingController.java
 │ └── UserController.java
 ├── dto
 │ ├── AddHoldingRequest.java
 │ ├── AlertRequestDTO.java
-│ ├── ClientResponse.java
+│ ├── SimpleUserResponse.java
 │ ├── CryptoData.java
 │ ├── LoginRequest.java
-│ ├── PriceResponse.java
+│ ├── HoldingDTO.java
 │ └── RegisterRequest.java
 ├── entity
 │ ├── Alert.java
 │ ├── Holding.java
 │ ├── Log.java
-│ ├── PriceAlert.java
 │ └── User.java
 ├── enums
 │ ├── AlertDirection.java
@@ -225,16 +223,13 @@ com.example.CryptoPortfolioTracker
 ├── repository
 │ ├── AlertRepository.java
 │ ├── HoldingRepository.java
+│ └── LogRepository.java
 │ └── UserRepository.java
-├── scheduler
-│ └── AlertSchedulerService.java
 ├── service
-│ ├── Implementation
-│ │ └── AdminServiceImpl.java
 │ ├── AdminService.java
+│ └── AlertSchedulerService.java
 │ ├── AlertService.java
 │ ├── CryptoService.java
-│ ├── CustomUserDetailsService.java
 │ ├── EmailService.java
 │ ├── HoldingService.java
 │ ├── NotificationService.java
