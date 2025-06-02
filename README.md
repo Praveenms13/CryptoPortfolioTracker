@@ -287,7 +287,6 @@ cd CryptoPortfolioTracker
 
 | Feature                       | Benefit                         |
 | ----------------------------- | ------------------------------- |
-| Email alerts                  | Better user notification        |
 | Graphical reports (charts)    | Easier to visualize performance |
 | Export portfolio to PDF/Excel | For offline record-keeping      |
 | Mobile app integration        | Future frontend possibilities   |
