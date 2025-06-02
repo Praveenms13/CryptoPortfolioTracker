@@ -102,10 +102,7 @@ public class HoldingService {
             }
             RestTemplate restTemplate = new RestTemplate();
             String url = "http://localhost:8080/api/crypto/getAllCryptos";
-            HttpHeaders headers = new HttpHeaders();
-            headers.setBearerAuth(token);
-            HttpEntity<String> entity = new HttpEntity<>(headers);
-            ResponseEntity<Map> response = restTemplate.exchange(url, HttpMethod.GET, entity, Map.class);
+            ResponseEntity<Map> response = restTemplate.exchange(url, HttpMethod.GET, null, Map.class);
             if (!response.getStatusCode().is2xxSuccessful()) {
                 return ResponseEntity.status(HttpStatus.BAD_GATEWAY)
                         .body(new ApiResponse(false, "Failed to fetch crypto prices"));
