@@ -4,11 +4,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 
 @Schema(description = "Login request object")
 public class LoginRequest {
-
-    // @Schema(description = "Username or email of the user", example = "johndoe")
     private String usernameOrEmail;
-
-    // @Schema(description = "Password of the user", example = "securePassword123")
     private String password;
 
     public LoginRequest(String admin, String password) {

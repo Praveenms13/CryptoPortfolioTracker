@@ -38,18 +38,18 @@ public class HoldingService {
     }
     public ResponseEntity<ApiResponse> addHolding(Long userId, String token, AddHoldingRequest request) {
         Optional<ResponseEntity<ApiResponse>> error = validateUser(userId, token);
-        if (error.isPresent())
+        if (error.isPresent()) {
+            System.out.print(error.get());
             return error.get();
+        }
         try {
             User user = userRepository.findById(userId).get();
             RestTemplate restTemplate = new RestTemplate();
-            HttpHeaders headers = new HttpHeaders();
-            headers.setBearerAuth(token);
-            HttpEntity<Void> entity = new HttpEntity<>(headers);
+            // HttpHeaders headers = new HttpHeaders();
             ResponseEntity<Map> response = restTemplate.exchange(
                     "http://localhost:8080/api/crypto/getAllCryptos",
                     HttpMethod.GET,
-                    entity,
+                    null,
                     Map.class);
             if (!response.getStatusCode().is2xxSuccessful() || !(Boolean) response.getBody().get("result")) {
                 return ResponseEntity.status(HttpStatus.BAD_GATEWAY)
@@ -74,7 +74,7 @@ public class HoldingService {
             holding.setBoughtDate(LocalDateTime.now());
             holding.setPricealert(null);
             holdingRepository.save(holding);
-            return ResponseEntity.ok(new ApiResponse(true, "Holding added successfully", holding));
+            return ResponseEntity.ok(new ApiResponse(true, "Holding added successfully"));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body(new ApiResponse(false, "Error adding holding: " + e.getMessage()));

@@ -23,8 +23,8 @@ public class AdminController {
     private AdminService adminService;
 
     @PostMapping("/login")
-    public ApiResponse login(@RequestBody LoginRequest request) {
-        return adminService.loginAdmin(request).getBody();
+    public ResponseEntity<ApiResponse> login(@RequestBody LoginRequest request) {
+        return adminService.loginAdmin(request);
     }
 
     @PutMapping("/updateUser/{id}")

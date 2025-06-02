@@ -48,7 +48,7 @@ public class AlertSchedulerService {
                     try {
                         notificationService.sendNotification(alert, currentPrice);
                     } catch (Exception e) {
-                        e.printStackTrace(); // log error from notification service
+                        e.printStackTrace();
                     } finally {
                         System.out.println("Alert triggered for " + alert.getSymbol() + " at $" + currentPrice);
                         alert.setStatus(AlertStatus.TRIGGERED);

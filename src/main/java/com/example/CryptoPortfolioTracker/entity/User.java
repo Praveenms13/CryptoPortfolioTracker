@@ -40,8 +40,8 @@ public class User {
     @JsonIgnore
     private List<Holding> holdings;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<PriceAlert> priceAlerts;
+    // @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    // private List<PriceAlert> priceAlerts;
 
     @Column(name = "session_token")
     private String sessionToken;
@@ -74,8 +74,8 @@ public class User {
     public List<Holding> getHoldings() { return holdings; }
     public void setHoldings(List<Holding> holdings) { this.holdings = holdings; }
 
-    public List<PriceAlert> getPriceAlerts() { return priceAlerts; }
-    public void setPriceAlerts(List<PriceAlert> priceAlerts) { this.priceAlerts = priceAlerts; }
+    // public List<PriceAlert> getPriceAlerts() { return priceAlerts; }
+    // public void setPriceAlerts(List<PriceAlert> priceAlerts) { this.priceAlerts = priceAlerts; }
 
     public Role getRole() {
         return role;
